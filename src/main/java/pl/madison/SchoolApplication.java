@@ -22,33 +22,40 @@ public class SchoolApplication implements CommandLineRunner{
         SpringApplication.run(SchoolApplication.class, args);
     }
 
+    public Student createStudent(String name, String surname, double scoreAverage){
+        return Student.builder().name(name).surname(surname).scoreAverage(scoreAverage).build();
+
+    }
+
 
 
     public void run(String... strings) throws Exception {
-        Student student1 = new Student();
-        Student student2 = new Student();
-        Student student3 = new Student();
-        Student student4 = new Student();
-
-        student1.setName("Andrzej");
-        student2.setName("Marysia");
-        student3.setName("Malina");
-        student4.setName("Roman");
-
-        student1.setSurname("Chmielewski");
-        student2.setSurname("Piwowarski");
-        student3.setSurname("Ziobro");
-        student4.setSurname("Romanski");
-
-        student1.setScoreAverage(4.5);
-        student2.setScoreAverage(3.8);
-        student3.setScoreAverage(4.2);
-        student4.setScoreAverage(4.1);
-
-        studentDao.save(student1);
-        studentDao.save(student2);
-        studentDao.save(student3);
-        studentDao.save(student4);
+//        Student student1 = new Student();
+//        Student student1 = Student.builder().name("Andrzej").surname("Andzej").scoreAverage(6.0).build();
+//
+//        Student student2 = new Student();
+//        Student student3 = new Student();
+//        Student student4 = new Student();
+//
+//        student1.setName("Andrzej");
+//        student2.setName("Marysia");
+//        student3.setName("Malina");
+//        student4.setName("Roman");
+//
+//        student1.setSurname("Chmielewski");
+//        student2.setSurname("Piwowarski");
+//        student3.setSurname("Ziobro");
+//        student4.setSurname("Romanski");
+//
+//        student1.setScoreAverage(4.5);
+//        student2.setScoreAverage(3.8);
+//        student3.setScoreAverage(4.2);
+//        student4.setScoreAverage(4.1);
+//
+//        studentDao.save(student1);
+//        studentDao.save(student2);
+//        studentDao.save(student3);
+//        studentDao.save(student4);
 
     }
 }

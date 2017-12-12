@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @RestController
 public class TestController {
 
@@ -15,23 +17,14 @@ public class TestController {
     private StudentDao studentDao;
 
     @RequestMapping(value = "/showStudents", method = RequestMethod.GET)
-    public String show(){
-        String student = "";
-
-        for (Student student1 : studentDao.findAll()) {
-            student = student + student1;
-        }
-
-        return student;
+    public List<Student> show(){
+        return (List<Student>)studentDao.findAll();
     }
 
     @RequestMapping(value = "/addStudent", method = RequestMethod.PUT)
     public String addStudent(@RequestParam("name") String name, @RequestParam("surname") String surname,
                              @RequestParam("scoreAverage") double scoreAverage){
-        Student tempStudent = new Student();
-        tempStudent.setName(name);
-        tempStudent.setSurname(surname);
-        tempStudent.setScoreAverage(scoreAverage);
+        Student tempStudent = Student.builder().name(name).surname(surname).scoreAverage(scoreAverage).build();
 
         studentDao.save(tempStudent);
 
@@ -70,7 +63,7 @@ public class TestController {
             }
         }
 
-        return "Student who has the highest score: " + tempStudent.getName() + " " + tempStudent.getSurname();
+        return ""+tempStudent.getScoreAverage();
     }
 
     @RequestMapping(value = "/theLowestScore", method = RequestMethod.GET)
@@ -86,7 +79,7 @@ public class TestController {
             }
         }
 
-        return "Student who has the lowest score: " + tempStudent.getName() + " " + tempStudent.getSurname();
+        return "" + tempStudent.getScoreAverage();
     }
 
 }
