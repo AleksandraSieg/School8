@@ -4,24 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Student {
-
+public class Scholarship {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String surname;
-    private double scoreAverage;
-    @OneToMany(mappedBy = "student")
-    private List<Scholarship> scholarship;
+    private String type;
+    private int value;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Student student;
 }

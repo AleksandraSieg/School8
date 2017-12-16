@@ -1,7 +1,9 @@
 package pl.madison.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import pl.madison.dao.ScholarshipDao;
 import pl.madison.dao.StudentDao;
+import pl.madison.domain.Scholarship;
 import pl.madison.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +16,15 @@ import java.util.List;
 public class TestController {
 
     @Autowired
+    private ScholarshipDao scDao;
+
+    @Autowired
     private StudentDao studentDao;
+
+    @RequestMapping(value = "/scholarship")
+    public List<Scholarship> findScholarship(){
+        return (List<Scholarship>)scDao.findScholarshipByType("sportowy");
+    }
 
     @RequestMapping(value = "/showStudents", method = RequestMethod.GET)
     public List<Student> show(){

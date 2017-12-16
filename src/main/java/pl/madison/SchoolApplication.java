@@ -1,6 +1,8 @@
 package pl.madison;
 
+import pl.madison.dao.ScholarshipDao;
 import pl.madison.dao.StudentDao;
+import pl.madison.domain.Scholarship;
 import pl.madison.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -15,47 +17,41 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SchoolApplication implements CommandLineRunner{
 
-    @Autowired
-    private StudentDao studentDao;
-
     public static void main(String[] args) {
         SpringApplication.run(SchoolApplication.class, args);
     }
+
+    @Autowired
+    private StudentDao studentDao;
+
+    @Autowired
+    private ScholarshipDao scholarshipDao;
 
     public Student createStudent(String name, String surname, double scoreAverage){
         return Student.builder().name(name).surname(surname).scoreAverage(scoreAverage).build();
 
     }
 
+    public Scholarship createScholarship(String type, int value, Student student){
+        return Scholarship.builder().type(type).value(value).student(student).build();
+    }
+
 
 
     public void run(String... strings) throws Exception {
-//        Student student1 = new Student();
-//        Student student1 = Student.builder().name("Andrzej").surname("Andzej").scoreAverage(6.0).build();
-//
-//        Student student2 = new Student();
-//        Student student3 = new Student();
-//        Student student4 = new Student();
-//
-//        student1.setName("Andrzej");
-//        student2.setName("Marysia");
-//        student3.setName("Malina");
-//        student4.setName("Roman");
-//
-//        student1.setSurname("Chmielewski");
-//        student2.setSurname("Piwowarski");
-//        student3.setSurname("Ziobro");
-//        student4.setSurname("Romanski");
-//
-//        student1.setScoreAverage(4.5);
-//        student2.setScoreAverage(3.8);
-//        student3.setScoreAverage(4.2);
-//        student4.setScoreAverage(4.1);
-//
-//        studentDao.save(student1);
-//        studentDao.save(student2);
-//        studentDao.save(student3);
-//        studentDao.save(student4);
+        Student student1 = Student.builder().name("Andrzej").surname("Chmielewski").scoreAverage(4.5).build();
+        Student student2 = Student.builder().name("Marysia").surname("Piwowarski").scoreAverage(3.8).build();
+        Student student3 = Student.builder().name("Malina").surname("Ziobro").scoreAverage(4.2).build();
+        Student student4 = Student.builder().name("Roman").surname("Romanski").scoreAverage(4.1).build();
+
+        studentDao.save(student1);
+        studentDao.save(student2);
+        studentDao.save(student3);
+        studentDao.save(student4);
+
+        Scholarship sp1 = createScholarship("sportowy", 400, student1);
+        scholarshipDao.save(sp1);
+
 
     }
 }

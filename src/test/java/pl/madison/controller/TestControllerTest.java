@@ -11,7 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import pl.madison.dao.ScholarshipDao;
 import pl.madison.dao.StudentDao;
+import pl.madison.domain.Scholarship;
 import pl.madison.domain.Student;
 
 import java.util.Arrays;
@@ -25,12 +27,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(MockitoJUnitRunner.class) //istnieje zaleznosc miedzy injectmocks a mock
 public class TestControllerTest {
-
     @InjectMocks
     private TestController testController;
 
     @Mock
     private StudentDao studentDao;
+
+    @Mock
+    private ScholarshipDao scholarshipDao;
 
     private MockMvc mockMvc; //mvc = model viewer controler
 
@@ -38,9 +42,8 @@ public class TestControllerTest {
     public void init(){
         mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
     } //testcontroller jest jednym z elementow mockowanych przez mvc
-    //nie laczymy elelementow mockowanych do testu, kazdy testowany w osonej paczce
-    //
 
+    //nie laczymy elelementow mockowanych do testu, kazdy testowany w osonej paczce
     @Test
     public void show() throws Exception {
         List<Student> students = Arrays.asList(Student.builder().name("x").build());
@@ -49,6 +52,17 @@ public class TestControllerTest {
 
         mockMvc.perform(get("/showStudents")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("x"));
+    }
+
+    //
+    @Test
+    public void findScholarship() throws Exception {
+        List<Scholarship> scholarships = Arrays.asList(Scholarship.builder().type("sportowy").build());
+
+        Mockito.when(scholarshipDao.findScholarshipByType("sportowy")).thenReturn(scholarships);
+
+        mockMvc.perform(get("/scholarship")).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].type").value("sportowy"));
     }
 
     @Test
