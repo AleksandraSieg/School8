@@ -11,36 +11,40 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import pl.madison.dao.ScholarshipDao;
-import pl.madison.dao.StudentDao;
 import pl.madison.domain.Scholarship;
 import pl.madison.domain.Student;
+import pl.madison.services.IScholarshipServices;
+import pl.madison.services.IStudentServices;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class) //istnieje zaleznosc miedzy injectmocks a mock
-public class TestControllerTest {
+public class TestControllerSchool {
     @InjectMocks
-    private TestController testController;
+    private SchoolController schoolController;
+
+//    @Mock
+//    private StudentDao studentDao;
 
     @Mock
-    private StudentDao studentDao;
+    private IStudentServices iStudentServices;
+
+//    @Mock
+//    private ScholarshipDao scholarshipDao;
 
     @Mock
-    private ScholarshipDao scholarshipDao;
+    private IScholarshipServices iScholarshipServices;
 
     private MockMvc mockMvc; //mvc = model viewer controler
 
     @Before
     public void init(){
-        mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(schoolController).build();
     } //testcontroller jest jednym z elementow mockowanych przez mvc
 
     //nie laczymy elelementow mockowanych do testu, kazdy testowany w osonej paczce
@@ -48,18 +52,17 @@ public class TestControllerTest {
     public void show() throws Exception {
         List<Student> students = Arrays.asList(Student.builder().name("x").build());
 
-        Mockito.when(studentDao.findAll()).thenReturn(students);
+        Mockito.when(iStudentServices.findAll()).thenReturn(students);
 
         mockMvc.perform(get("/showStudents")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].name").value("x"));
     }
 
-    //
     @Test
     public void findScholarship() throws Exception {
         List<Scholarship> scholarships = Arrays.asList(Scholarship.builder().type("sportowy").build());
 
-        Mockito.when(scholarshipDao.findScholarshipByType("sportowy")).thenReturn(scholarships);
+        Mockito.when(iScholarshipServices.findScholarshipByType("sportowy")).thenReturn(scholarships);
 
         mockMvc.perform(get("/scholarship")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].type").value("sportowy"));
@@ -68,7 +71,7 @@ public class TestControllerTest {
     @Test
     public void addStudent() throws Exception {
         Student s = Student.builder().name("x").surname("y").scoreAverage(6).build();
-        Mockito.when(studentDao.save(s)).thenReturn(s);
+        Mockito.when(iStudentServices.save(s)).thenReturn(s);
 
         mockMvc.perform(MockMvcRequestBuilders.put("/addStudent").param("name", "x")
                 .param("surname","y")
@@ -79,7 +82,7 @@ public class TestControllerTest {
 
     @Test
     public void deleteStudent() throws Exception {
-        Mockito.when(studentDao.findOne(1L)).thenReturn(Student.builder().id(1L).build());
+        Mockito.when(iStudentServices.findOne(1L)).thenReturn(Student.builder().id(1L).build());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/deleteStudent").param("id","1"))
                 .andExpect(MockMvcResultMatchers.content().string("You have successfully deleted student"));
@@ -89,7 +92,7 @@ public class TestControllerTest {
     @Test
     public void update() throws Exception {
 
-        Mockito.when(studentDao.findOne(1L)).thenReturn(Student.builder().id(1L) // builder jeden ze wzorcoe projektowych,
+        Mockito.when(iStudentServices.findOne(1L)).thenReturn(Student.builder().id(1L) // builder jeden ze wzorcoe projektowych,
                 // czytamy!! kiedy cos tam zwroc cos tam
                 .name("aaa")
                 .surname("yyy")
@@ -108,7 +111,7 @@ public class TestControllerTest {
         Student student2 = Student.builder().scoreAverage(3).build();
         List<Student> students = Arrays.asList(student1, student2);
 
-        Mockito.when(studentDao.findAll()).thenReturn(students);
+        Mockito.when(iStudentServices.findAll()).thenReturn(students);
 
         mockMvc.perform(get("/theHighestScore")).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""+"6.0"));
@@ -121,7 +124,7 @@ public class TestControllerTest {
 
         List<Student> st = Arrays.asList(st1, st2);
 
-        Mockito.when(studentDao.findAll()).thenReturn(st);
+        Mockito.when(iStudentServices.findAll()).thenReturn(st);
 
         mockMvc.perform(get("/theLowestScore")).andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(""+"3.0"));

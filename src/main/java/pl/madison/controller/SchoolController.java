@@ -9,26 +9,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import pl.madison.services.IScholarshipServices;
+import pl.madison.services.IStudentServices;
 
 import java.util.List;
 
 @RestController
-public class TestController {
+public class SchoolController {
 
     @Autowired
-    private ScholarshipDao scDao;
+    private IStudentServices iStudentServices;
+
+//    @Autowired
+//    private ScholarshipDao scDao;
 
     @Autowired
-    private StudentDao studentDao;
+    private IScholarshipServices iScholarshipServices;
+
+//    @Autowired
+//    private StudentDao studentDao;
 
     @RequestMapping(value = "/scholarship")
     public List<Scholarship> findScholarship(){
-        return (List<Scholarship>)scDao.findScholarshipByType("sportowy");
+        return (List<Scholarship>)iScholarshipServices.findScholarshipByType("sportowy");
     }
 
     @RequestMapping(value = "/showStudents", method = RequestMethod.GET)
     public List<Student> show(){
-        return (List<Student>)studentDao.findAll();
+        return (List<Student>)iStudentServices.findAll();
     }
 
     @RequestMapping(value = "/addStudent", method = RequestMethod.PUT)
@@ -36,14 +44,14 @@ public class TestController {
                              @RequestParam("scoreAverage") double scoreAverage){
         Student tempStudent = Student.builder().name(name).surname(surname).scoreAverage(scoreAverage).build();
 
-        studentDao.save(tempStudent);
+        iStudentServices.save(tempStudent);
 
         return "jupi! You had already added student";
     }
 
     @RequestMapping(value = "/deleteStudent", method = RequestMethod.DELETE)
     public String deleteStudent(@RequestParam("id") Long id){
-        studentDao.delete(id);
+        iStudentServices.delete(id);
 
         return "You have successfully deleted student";
     }
@@ -51,11 +59,11 @@ public class TestController {
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
     public String update(@RequestParam("id") Long id, @RequestParam("name") String name,
                          @RequestParam("surname") String surname, @RequestParam("scoreAverage") double scoreAverage){
-        Student tempStudent = studentDao.findOne(id);
+        Student tempStudent = iStudentServices.findOne(id);
         tempStudent.setName(name);
         tempStudent.setSurname(surname);
         tempStudent.setScoreAverage(scoreAverage);
-        studentDao.save(tempStudent);
+        iStudentServices.save(tempStudent);
 
         return "You have successfully update student;)";
     }
@@ -66,7 +74,7 @@ public class TestController {
         double tempScore = 0;
         Student tempStudent = null;
 
-        for (Student student : studentDao.findAll()) {
+        for (Student student : iStudentServices.findAll()) {
             if(tempScore < student.getScoreAverage()){
                 tempScore = student.getScoreAverage();
                 tempStudent = student;
@@ -82,7 +90,7 @@ public class TestController {
         double tempScore = 100;
         Student tempStudent = null;
 
-        for (Student student : studentDao.findAll()) {
+        for (Student student : iStudentServices.findAll()) {
             if(tempScore > student.getScoreAverage()){
                 tempScore = student.getScoreAverage();
                 tempStudent = student;
