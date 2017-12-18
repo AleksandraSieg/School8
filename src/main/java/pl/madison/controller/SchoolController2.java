@@ -18,7 +18,7 @@ public class SchoolController2 {
     @RequestMapping(value = "/showStudents2")
     public String showStudents2(Map<String, Object> model){
         List<Student> students = iStudentServices.findAll();
-        model.put("show", students);
+        model.put("students", students);
         return "showStudents";
     }
 }
