@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <th:block th:each="student : ${students}">
+        <tr>
+            <td th:text="${student.name}"/>
+            <td th:text="${student.surname}"/>
+            <td th:text="${student.scoreAverage}"/>
+
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

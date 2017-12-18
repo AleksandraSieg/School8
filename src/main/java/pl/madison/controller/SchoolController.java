@@ -29,7 +29,12 @@ public class SchoolController {
 //    @Autowired
 //    private StudentDao studentDao;
 
-    @RequestMapping(value = "/scholarship")
+    @RequestMapping(value = "/scholarshipByValue")
+    public List<Scholarship> findScholarship2(){
+        return (List<Scholarship>)iScholarshipServices.findScholarshipByValue(400);
+    }
+
+    @RequestMapping(value = "/scholarshipByType")
     public List<Scholarship> findScholarship(){
         return (List<Scholarship>)iScholarshipServices.findScholarshipByType("sportowy");
     }

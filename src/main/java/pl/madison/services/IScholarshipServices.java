@@ -7,4 +7,5 @@ import java.util.List;
 public interface IScholarshipServices {
 
     List<Scholarship> findScholarshipByType(String type);
+    List<Scholarship> findScholarshipByValue(int value);
 }

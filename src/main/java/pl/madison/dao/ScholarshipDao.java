@@ -8,4 +8,6 @@ import java.util.List;
 public interface ScholarshipDao extends CrudRepository<Scholarship, Long> {
 
     List<Scholarship> findScholarshipByType(String type) ;
+
+    List<Scholarship> findScholarshipByValue(int value);
 }

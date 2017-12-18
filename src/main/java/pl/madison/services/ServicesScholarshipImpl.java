@@ -16,4 +16,8 @@ public class ServicesScholarshipImpl implements IScholarshipServices {
     public List<Scholarship> findScholarshipByType(String type) {
         return (List<Scholarship>)scholarshipDao.findScholarshipByType(type);
     }
+
+    public List<Scholarship> findScholarshipByValue(int value) {
+        return (List<Scholarship>)scholarshipDao.findScholarshipByValue(value);
+    }
 }

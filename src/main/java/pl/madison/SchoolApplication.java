@@ -51,6 +51,8 @@ public class SchoolApplication implements CommandLineRunner{
 
         Scholarship sp1 = createScholarship("sportowy", 400, student1);
         scholarshipDao.save(sp1);
+        Scholarship sp2 = createScholarship("socjalny", 400, student2);
+        scholarshipDao.save(sp2);
 
 
     }
