@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <th:block th:each="scholarship : ${scholarships}">
+        <tr>
+            <td th:text="${scholarship.value}"/>
+            <td th:text="${scholarship.type}"/>
+            <td th:text="${scholarship.student}"/>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>
